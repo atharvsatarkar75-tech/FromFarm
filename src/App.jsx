@@ -5,10 +5,12 @@ import AdminLogin from "./pages/AdminLogin";
 import ProductDetail from "./pages/ProductDetail";
 import OurStory from "./pages/OurStory";
 import Shop from "./pages/Shop";
+import CartDrawer from "./components/CartDrawer";
 
 function App() {
   return (
     <BrowserRouter>
+      <CartDrawer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />

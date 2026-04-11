@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useCart } from "../CartContext";
 
 const ALL_PRODUCTS = [
   {
@@ -91,6 +92,7 @@ const ALL_PRODUCTS = [
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const whatsapp = import.meta.env.VITE_WHATSAPP_NUMBER;
   const [qty, setQty] = useState(1);
 
@@ -190,6 +192,9 @@ export default function ProductDetail() {
           </div>
 
           {/* Order Button */}
+          <button onClick={() => addToCart(product, qty)} style={{ width: "100%", background: "#3B6D11", color: "#fff", border: "none", padding: "16px", borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>
+  🛒 Add to Cart
+</button>
           <button onClick={handleOrder} style={{ width: "100%", background: "#25D366", color: "#fff", border: "none", padding: "16px", borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>
             💬 Order on WhatsApp
           </button>

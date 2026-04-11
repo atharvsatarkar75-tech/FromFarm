@@ -1,15 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../CartContext";
 import { db } from "../firebase/config";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 
 export default function Home() {
   const navigate = useNavigate();
+const { totalItems, setCartOpen, addToCart } = useCart();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [activePhoto, setActivePhoto] = useState(0);
   const [heroBg, setHeroBg] = useState(0);
-  const [cartCount, setCartCount] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
@@ -69,10 +70,7 @@ export default function Home() {
     setName(""); setPhone("");
   };
 
-  const addToCart = (productName) => {
-    setCartCount(c => c + qty);
-    alert(`Added ${qty} x ${productName} to cart!`);
-  };
+  
 
   const slide = (dir) => {
     const max = products.length - 1;
@@ -111,9 +109,9 @@ export default function Home() {
             <div style={{ fontSize: 17, fontWeight: 800, color: "#173404", letterSpacing: 2 }}>FROM <span style={{ color: "#639922" }}>FARM</span></div>
           </div>
           <div style={{ display: "flex", gap: 10 }}>
-            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#EAF3DE", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", position: "relative" }} onClick={() => alert(cartCount === 0 ? "Cart is empty!" : `${cartCount} items in cart`)}>
+            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#EAF3DE", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", position: "relative" }} onClick={() => setCartOpen(true)}>
               🛒
-              <div style={{ position: "absolute", top: -2, right: -2, width: 17, height: 17, background: "#3B6D11", borderRadius: "50%", fontSize: 10, fontWeight: 700, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>{cartCount}</div>
+              <div style={{ position: "absolute", top: -2, right: -2, width: 17, height: 17, background: "#3B6D11", borderRadius: "50%", fontSize: 10, fontWeight: 700, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>{totalItems}</div>
             </div>
           </div>
         </nav>
@@ -162,7 +160,7 @@ export default function Home() {
               </div>
             </div>
             <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
-              <button onClick={() => addToCart(p.name)} style={{ flex: 1, background: "#3B6D11", color: "#fff", border: "none", padding: 16, borderRadius: 25, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Add to Cart</button>
+              <button onClick={() => { addToCart(p, qty); }} style={{ flex: 1, background: "#3B6D11", color: "#fff", border: "none", padding: 16, borderRadius: 25, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Add to Cart</button>
               <button onClick={() => handleOrder(p.name)} style={{ flex: 1, background: "#25D366", color: "#fff", border: "none", padding: 16, borderRadius: 25, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Order on WhatsApp</button>
             </div>
             <div style={{ borderTop: "1px solid #e5e5e5", paddingTop: 28 }}>
@@ -204,9 +202,9 @@ export default function Home() {
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <div onClick={() => setSearchOpen(!searchOpen)} style={{ width: 38, height: 38, borderRadius: "50%", background: "#EAF3DE", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 16 }}>🔍</div>
-          <div onClick={() => alert(cartCount === 0 ? "Cart is empty! Browse our products." : `You have ${cartCount} item(s) in cart.`)} style={{ width: 38, height: 38, borderRadius: "50%", background: "#EAF3DE", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 16, position: "relative" }}>
+          <div onClick={() => setCartOpen(true)} style={{ width: 38, height: 38, borderRadius: "50%", background: "#EAF3DE", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 16, position: "relative" }}>
             🛒
-            <div style={{ position: "absolute", top: -2, right: -2, width: 17, height: 17, background: "#3B6D11", borderRadius: "50%", fontSize: 10, fontWeight: 700, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>{cartCount}</div>
+            <div style={{ position: "absolute", top: -2, right: -2, width: 17, height: 17, background: "#3B6D11", borderRadius: "50%", fontSize: 10, fontWeight: 700, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>{totalItems}</div>
           </div>
         </div>
       </nav>

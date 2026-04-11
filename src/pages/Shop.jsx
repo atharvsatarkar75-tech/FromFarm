@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../CartContext";
 
 const ALL_PRODUCTS = [
   {
@@ -37,6 +38,7 @@ const SORT_OPTIONS = [
 
 export default function Shop() {
   const navigate = useNavigate();
+const { addToCart, setCartOpen } = useCart();
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("popularity");
   const whatsapp = import.meta.env.VITE_WHATSAPP_NUMBER;
@@ -149,7 +151,10 @@ export default function Shop() {
                       onMouseLeave={e => { e.currentTarget.style.background = "#EAF3DE"; e.currentTarget.style.color = "#27500A"; }}>
                       View Details
                     </button>
-                    <button onClick={() => handleOrder(p.name)} style={{ flex: 1, background: "#25D366", color: "#fff", border: "none", padding: "11px", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                    <button onClick={() => { addToCart(p, 1); }} style={{ flex: 1, background: "#3B6D11", color: "#fff", border: "none", padding: "11px", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                      🛒 Add to Cart
+                    </button>
+<button onClick={() => handleOrder(p.name)} style={{ flex: 1, background: "#25D366", color: "#fff", border: "none", padding: "11px", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
                       💬 Order
                     </button>
                   </div>
