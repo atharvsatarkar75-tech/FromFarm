@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
+import useIsMobile from "../useIsMobile";
 
 const ALL_PRODUCTS = [
   {
@@ -91,8 +92,9 @@ const ALL_PRODUCTS = [
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { addToCart } = useCart();
+const navigate = useNavigate();
+const { addToCart } = useCart();
+const isMobile = useIsMobile();
   const whatsapp = import.meta.env.VITE_WHATSAPP_NUMBER;
   const [qty, setQty] = useState(1);
 
@@ -137,7 +139,7 @@ export default function ProductDetail() {
       </div>
 
       {/* MAIN CONTENT */}
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 32px 80px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: isMobile ? "20px 16px 60px" : "32px 32px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 48, alignItems: "start" }}>
 
         {/* LEFT — Product Image */}
         <div>

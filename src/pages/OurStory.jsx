@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import useIsMobile from "../useIsMobile";
 
 export default function OurStory() {
   const navigate = useNavigate();
+const isMobile = useIsMobile();
 
   return (
     <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: "#1a1a1a", minHeight: "100vh" }}>
@@ -19,11 +21,11 @@ export default function OurStory() {
       </nav>
 
       {/* HERO */}
-      <div style={{ background: "#173404", padding: "80px 48px", textAlign: "center" }}>
+      <div style={{ background: "#173404", padding: isMobile ? "40px 20px" : "80px 48px", textAlign: "center" }}>
         <div style={{ display: "inline-block", background: "rgba(150,196,89,0.2)", color: "#97C459", fontSize: 11, fontWeight: 700, padding: "5px 16px", borderRadius: 25, marginBottom: 20, letterSpacing: 1.5, border: "1px solid rgba(150,196,89,0.3)" }}>
           OUR STORY
         </div>
-        <h1 style={{ fontSize: 52, fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: 16 }}>
+        <h1 style={{ fontSize: isMobile ? 32 : 52, fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: 16 }}>
           Grown with Patience,<br /><span style={{ color: "#97C459" }}>Delivered with Pride</span>
         </h1>
         <p style={{ fontSize: 16, color: "#C0DD97", maxWidth: 600, margin: "0 auto", lineHeight: 1.8 }}>
@@ -32,15 +34,15 @@ export default function OurStory() {
       </div>
 
       {/* FARM PHOTOS GRID */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, height: 400 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: 4, height: isMobile ? "auto" : 400 }}>
         <div style={{ background: "#C0DD97", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 80 }}>🌳</div>
         <div style={{ background: "#97C459", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 80 }}>🥭</div>
         <div style={{ background: "#B8D98D", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 80 }}>🌿</div>
       </div>
 
       {/* FOUNDER SECTION */}
-      <div style={{ background: "#fff", padding: "80px 48px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 2fr", gap: 56, alignItems: "center" }}>
+      <div style={{ background: "#fff", padding: isMobile ? "40px 20px" : "80px 48px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 2fr", gap: isMobile ? 24 : 56, alignItems: "center" }}>
           <div style={{ background: "#EAF3DE", borderRadius: 24, height: 320, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 100 }}>
             👨‍🌾
           </div>
@@ -58,11 +60,11 @@ export default function OurStory() {
       </div>
 
       {/* MAIN STORY */}
-      <div style={{ background: "#EAF3DE", padding: "80px 48px" }}>
+      <div style={{ background: "#EAF3DE", padding: isMobile ? "40px 20px" : "80px 48px" }}>
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <div style={{ display: "inline-block", background: "#3B6D11", color: "#EAF3DE", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 25, marginBottom: 24, letterSpacing: 1 }}>THE FARM</div>
           <h2 style={{ fontSize: 36, fontWeight: 900, color: "#173404", marginBottom: 24, lineHeight: 1.3 }}>100–120 Acres of Pure,<br />Organic Maharashtra Land</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 48, alignItems: "start" }}>
             <div>
               <p style={{ fontSize: 15, color: "#27500A", lineHeight: 1.9, marginBottom: 20 }}>
                 Spread across 100–120 acres in Maharashtra, our farm is home to a diverse range of crops including mango, pomegranate, tamarind (imli), and Indian gooseberry (amla). For over two decades, this land has been carefully nurtured using only organic farming practices.
@@ -95,7 +97,7 @@ export default function OurStory() {
       </div>
 
       {/* TIMELINE */}
-      <div style={{ background: "#173404", padding: "80px 48px" }}>
+      <div style={{ background: "#173404", padding: isMobile ? "40px 20px" : "80px 48px" }}>
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <div style={{ display: "inline-block", background: "rgba(150,196,89,0.2)", color: "#97C459", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 25, marginBottom: 16, letterSpacing: 1 }}>OUR JOURNEY</div>
@@ -148,7 +150,7 @@ export default function OurStory() {
 
       {/* STATS */}
       <div style={{ background: "#EAF3DE", padding: "56px 48px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, textAlign: "center" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 20, textAlign: "center" }}>
           {[
             { num: "100+", label: "Acres of Farm Land" },
             { num: "20+", label: "Years of Organic Farming" },

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
+import useIsMobile from "../useIsMobile";
 
 const ALL_PRODUCTS = [
   {
@@ -39,6 +40,7 @@ const SORT_OPTIONS = [
 export default function Shop() {
   const navigate = useNavigate();
 const { addToCart, setCartOpen } = useCart();
+const isMobile = useIsMobile();
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("popularity");
   const whatsapp = import.meta.env.VITE_WHATSAPP_NUMBER;
@@ -73,7 +75,7 @@ const { addToCart, setCartOpen } = useCart();
       </nav>
 
       {/* HERO */}
-      <div style={{ background: "#173404", padding: "56px 48px", textAlign: "center" }}>
+      <div style={{ background: "#173404", padding: isMobile ? "40px 20px" : "56px 48px", textAlign: "center" }}>
         <div style={{ display: "inline-block", background: "rgba(150,196,89,0.2)", color: "#97C459", fontSize: 11, fontWeight: 700, padding: "5px 16px", borderRadius: 25, marginBottom: 16, letterSpacing: 1.5, border: "1px solid rgba(150,196,89,0.3)" }}>
           OUR PRODUCTS
         </div>
@@ -86,7 +88,7 @@ const { addToCart, setCartOpen } = useCart();
       </div>
 
       {/* FILTERS & SORT */}
-      <div style={{ background: "#fff", padding: "24px 48px", borderBottom: "1px solid #e8f5e0", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+      <div style={{ background: "#fff", padding: isMobile ? "16px 20px" : "24px 48px", borderBottom: "1px solid #e8f5e0", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
         {/* Category Filter */}
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           {CATEGORIES.map(cat => (
@@ -113,13 +115,13 @@ const { addToCart, setCartOpen } = useCart();
       </div>
 
       {/* PRODUCTS GRID */}
-      <div style={{ padding: "48px", background: "#fafff5" }}>
+      <div style={{ padding: isMobile ? "24px 16px" : "48px", background: "#fafff5" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ fontSize: 13, color: "#888", marginBottom: 24 }}>
             Showing {filtered.length} product{filtered.length !== 1 ? "s" : ""}
             {activeCategory !== "All" ? ` in ${activeCategory}` : ""}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(280px, 1fr))", gap: isMobile ? 12 : 24 }}>
             {filtered.map((p) => (
               <div key={p.id}
                 style={{ background: "#fff", border: "1px solid #e8f5e0", borderRadius: 24, overflow: "hidden", transition: "transform 0.3s, box-shadow 0.3s" }}
@@ -166,7 +168,7 @@ const { addToCart, setCartOpen } = useCart();
       </div>
 
       {/* BOTTOM CTA */}
-      <div style={{ background: "#173404", padding: "56px 48px", textAlign: "center" }}>
+      <div style={{ background: "#173404", padding: isMobile ? "40px 20px" : "56px 48px", textAlign: "center" }}>
         <h2 style={{ fontSize: 28, fontWeight: 900, color: "#C0DD97", marginBottom: 12 }}>Can't decide? We'll help!</h2>
         <p style={{ fontSize: 15, color: "#97C459", marginBottom: 28 }}>Chat with us on WhatsApp and we'll recommend the best fruits for you.</p>
         <a href={`https://wa.me/${whatsapp}?text=${encodeURIComponent("Hi! I need help choosing products from From Farm.")}`} target="_blank" rel="noreferrer"
