@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { db } from "../firebase/config";
 import { collection, getDocs, addDoc } from "firebase/firestore";
+import useIsMobile from "../useIsMobile";
 
 export default function Home() {
   const navigate = useNavigate();
 const { totalItems, setCartOpen, addToCart } = useCart();
+const isMobile = useIsMobile();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [activePhoto, setActivePhoto] = useState(0);
@@ -221,12 +223,12 @@ const { totalItems, setCartOpen, addToCart } = useCart();
           <img src={heroImgs[heroBg]} alt="Farm" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.35, transition: "opacity 0.8s" }} />
         </div>
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(23,52,4,0.92) 0%, rgba(23,52,4,0.5) 60%, rgba(23,52,4,0.2) 100%)" }} />
-        <div style={{ position: "relative", zIndex: 2, padding: "60px 48px", maxWidth: 620 }}>
+        <div style={{ position: "relative", zIndex: 2, padding: isMobile ? "40px 20px" : "60px 48px", maxWidth: 620 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(150,196,89,0.2)", color: "#97C459", fontSize: 11, fontWeight: 700, padding: "6px 16px", borderRadius: 25, marginBottom: 20, letterSpacing: "1.5px", border: "1px solid rgba(150,196,89,0.3)" }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#97C459" }}></div>
             100% ORGANIC · MAHARASHTRA
           </div>
-          <h1 style={{ fontSize: 54, fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: 16 }}>Farm Fresh,<br /><span style={{ color: "#97C459" }}>Straight to</span><br />Your Door</h1>
+          <h1 style={{ fontSize: isMobile ? 36 : 54, fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: 16 }}>Farm Fresh,<br /><span style={{ color: "#97C459" }}>Straight to</span><br />Your Door</h1>
           <div style={{ width: 60, height: 3, background: "#639922", borderRadius: 2, marginBottom: 16 }}></div>
           <p style={{ fontSize: 16, color: "#C0DD97", lineHeight: 1.8, marginBottom: 32, maxWidth: 480 }}>Hand-picked mangoes and pomegranates from our organic farm in Maharashtra. No chemicals, no middlemen — just pure, honest fruit grown with love.</p>
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
@@ -242,7 +244,7 @@ const { totalItems, setCartOpen, addToCart } = useCart();
             ))}
           </div>
         </div>
-        <div style={{ position: "absolute", bottom: 20, right: 24, display: "flex", gap: 8, zIndex: 3 }}>
+        <div style={{ position: isMobile ? "relative" : "absolute", bottom: 20, right: 24, display: "flex", gap: 8, zIndex: 3, justifyContent: isMobile ? "center" : "flex-end", marginTop: isMobile ? 16 : 0 }}>
           {heroImgs.map((img, idx) => (
             <div key={idx} onClick={() => setHeroBg(idx)} style={{ width: 56, height: 56, borderRadius: 12, overflow: "hidden", cursor: "pointer", border: heroBg === idx ? "2px solid #fff" : "2px solid rgba(255,255,255,0.3)", transition: "border-color 0.2s" }}>
               <img src={img} alt={`View ${idx + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -251,12 +253,12 @@ const { totalItems, setCartOpen, addToCart } = useCart();
         </div>
       </div>
 
-      <div id="products-sec" style={{ padding: "72px 40px" }}>
+      <div id="products-sec" style={{ padding: isMobile ? "40px 16px" : "72px 40px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 40 }}>
             <div>
               <div style={{ display: "inline-block", background: "#EAF3DE", color: "#3B6D11", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 25, marginBottom: 10, letterSpacing: 1, textTransform: "uppercase" }}>Our Products</div>
-              <div style={{ fontSize: 36, fontWeight: 900, color: "#173404" }}>Fresh from the tree</div>
+              <div style={{ fontSize: isMobile ? 24 : 36, fontWeight: 900, color: "#173404" }}>Fresh from the tree</div>
               <div style={{ fontSize: 15, color: "#666", marginTop: 6 }}>Click arrows to slide — click any card for full details</div>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
@@ -267,7 +269,7 @@ const { totalItems, setCartOpen, addToCart } = useCart();
           <div style={{ overflow: "hidden" }}>
             <div ref={trackRef} style={{ display: "flex", gap: 24, transition: "transform 0.4s cubic-bezier(0.4,0,0.2,1)" }}>
               {products.map((p) => (
-                <div key={p.id} onClick={() => { setSelectedProduct(p); setCurrentPage("product"); setQty(1); setActivePhoto(0); window.scrollTo(0,0); }} style={{ flex: "0 0 300px", background: "#fff", border: p.id === "kesar" ? "2px solid #97C459" : "1px solid #e5e5e5", borderRadius: 24, overflow: "hidden", cursor: "pointer", transition: "transform 0.3s, border-color 0.3s" }}
+                <div key={p.id} onClick={() => { setSelectedProduct(p); setCurrentPage("product"); setQty(1); setActivePhoto(0); window.scrollTo(0,0); }} style={{ flex: isMobile ? "0 0 260px" : "0 0 300px", background: "#fff", border: p.id === "kesar" ? "2px solid #97C459" : "1px solid #e5e5e5", borderRadius: 24, overflow: "hidden", cursor: "pointer", transition: "transform 0.3s, border-color 0.3s" }}
                   onMouseEnter={e => e.currentTarget.style.transform = "translateY(-8px)"}
                   onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
                   <div style={{ position: "relative", height: 210, background: p.bg, overflow: "hidden" }}>
@@ -291,12 +293,12 @@ const { totalItems, setCartOpen, addToCart } = useCart();
         </div>
       </div>
 
-      <div style={{ background: "#fafff5", padding: "72px 40px" }}>
+      <div style={{ background: "#fafff5", padding: isMobile ? "40px 16px" : "72px 40px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center", marginBottom: 40 }}>
           <div style={{ display: "inline-block", background: "#EAF3DE", color: "#3B6D11", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 25, marginBottom: 10, letterSpacing: 1, textTransform: "uppercase" }}>Why Choose Us</div>
           <div style={{ fontSize: 36, fontWeight: 900, color: "#173404" }}>The difference is real</div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 20, maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(auto-fit, minmax(210px, 1fr))", gap: 16, maxWidth: 1200, margin: "0 auto" }}>
           {[["🌱","Zero chemicals","No pesticides, no synthetic fertilizers. Traditional organic methods passed down through generations."],["👨‍🌾","Direct from farmer","Buy directly from us — no middlemen, no markups. Fresher fruit at better prices."],["🚚","48hr delivery","Packed and shipped the same day we pick. Delivered fresh across Maharashtra in 48 hours."],["🏡","Family farm","Cultivated for generations with love, care and deep respect for the land and community."]].map(([icon, title, desc]) => (
             <div key={title} style={{ background: "#fff", border: "1px solid #e8f5e0", borderRadius: 20, padding: "28px 24px", textAlign: "center", transition: "all 0.3s" }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = "#97C459"; e.currentTarget.style.transform = "translateY(-6px)"; }}
@@ -309,10 +311,10 @@ const { totalItems, setCartOpen, addToCart } = useCart();
         </div>
       </div>
 
-      <div id="story-sec" style={{ background: "#173404", padding: "80px 48px" }}>
+      <div id="story-sec" style={{ background: "#173404", padding: isMobile ? "40px 20px" : "80px 48px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center", marginBottom: 56 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "220px 220px", gap: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 32 : 56, alignItems: "center", marginBottom: 56 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: isMobile ? "160px 160px" : "220px 220px", gap: 14 }}>
               <div style={{ gridRow: "span 2", borderRadius: 20, overflow: "hidden" }}><img src="/images/kesar1.jpg" alt="Farm" style={{ width: "100%", height: "100%", objectFit: "cover" }} /></div>
               <div style={{ borderRadius: 16, overflow: "hidden" }}><img src="/images/kesar2.jpg" alt="Farm 2" style={{ width: "100%", height: "100%", objectFit: "cover" }} /></div>
               <div style={{ borderRadius: 16, overflow: "hidden" }}><img src="/images/kesar3.jpg" alt="Farm 3" style={{ width: "100%", height: "100%", objectFit: "cover" }} /></div>
@@ -337,7 +339,7 @@ const { totalItems, setCartOpen, addToCart } = useCart();
 
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 48, marginBottom: 48 }}>
             <div style={{ fontSize: 22, fontWeight: 800, color: "#C0DD97", marginBottom: 32, textAlign: "center" }}>Our Journey</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 0 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: isMobile ? 24 : 0 }}>
               {[["🌱","1962","Grandfather plants first mango trees on our Maharashtra land"],["🌳","1985","Farm grows to include pomegranates. Second generation takes over"],["🏆","2010","Certified organic. Zero chemicals pledge made by our family"],["📱","2024","From Farm launches — bringing our fruit direct to your table"]].map(([icon, year, text]) => (
                 <div key={year} style={{ textAlign: "center", padding: "0 16px" }}>
                   <div style={{ width: 48, height: 48, background: "#3B6D11", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", fontSize: 18, border: "3px solid #173404" }}>{icon}</div>
@@ -368,7 +370,7 @@ const { totalItems, setCartOpen, addToCart } = useCart();
               <div style={{ display: "inline-block", background: "rgba(150,196,89,0.2)", color: "#97C459", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 25, marginBottom: 10, letterSpacing: 1 }}>Our Values</div>
               <div style={{ fontSize: 28, fontWeight: 900, color: "#C0DD97", marginTop: 10 }}>Why we farm the way we do</div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 32 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 32 }}>
               {[
                 { icon: "🌿", title: "Farm to Table", desc: "Fruit leaves our farm and reaches your door within 48 hours. No warehouses, no cold storage." },
                 { icon: "👨‍🌾", title: "Traditional Farming", desc: "Three generations of farming knowledge. We use methods passed down since 1962." },
@@ -392,7 +394,7 @@ const { totalItems, setCartOpen, addToCart } = useCart();
         </div>
       </div>
 
-      <div id="contact-sec" style={{ background: "#EAF3DE", padding: "80px 48px", textAlign: "center" }}>
+      <div id="contact-sec" style={{ background: "#EAF3DE", padding: isMobile ? "40px 20px" : "80px 48px", textAlign: "center" }}>
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
           <div style={{ display: "inline-block", background: "#3B6D11", color: "#EAF3DE", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 25, marginBottom: 12, letterSpacing: 1, textTransform: "uppercase" }}>Get in Touch</div>
           <div style={{ fontSize: 36, fontWeight: 900, color: "#173404", marginBottom: 10 }}>Ready to order?</div>
@@ -409,8 +411,8 @@ const { totalItems, setCartOpen, addToCart } = useCart();
         </div>
       </div>
 
-      <div style={{ background: "#173404", padding: "56px 48px 0" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 48, paddingBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+      <div style={{ background: "#173404", padding: isMobile ? "40px 20px 0" : "56px 48px 0" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", gap: isMobile ? 24 : 48, paddingBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
           <div>
             <div style={{ fontSize: 22, fontWeight: 900, color: "#C0DD97", letterSpacing: 2, marginBottom: 12 }}>FROM <span style={{ color: "#639922" }}>FARM</span></div>
             <div style={{ fontSize: 14, color: "#639922", lineHeight: 1.7, maxWidth: 240 }}>Organic mangoes and pomegranates grown with love in Maharashtra. From our family farm, to your table.</div>
