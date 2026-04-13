@@ -272,24 +272,56 @@ const isMobile = useIsMobile();
           <div style={{ overflow: "hidden" }}>
             <div ref={trackRef} style={{ display: "flex", gap: 24, transition: "transform 0.4s cubic-bezier(0.4,0,0.2,1)" }}>
               {products.map((p) => (
-                <div key={p.id} onClick={() => { setSelectedProduct(p); setCurrentPage("product"); setQty(1); setActivePhoto(0); window.scrollTo(0,0); }} style={{ flex: isMobile ? "0 0 260px" : "0 0 300px", background: "#fff", border: p.id === "kesar" ? "2px solid #97C459" : "1px solid #e5e5e5", borderRadius: 24, overflow: "hidden", cursor: "pointer", transition: "transform 0.3s, border-color 0.3s" }}
-                  onMouseEnter={e => e.currentTarget.style.transform = "translateY(-8px)"}
-                  onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
-                  <div style={{ position: "relative", height: 210, background: p.bg, overflow: "hidden" }}>
-                    {p.photos.length > 0 ? <img src={p.photos[0]} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 90 }}>{p.emoji}</div>}
-                    <div style={{ position: "absolute", top: 14, left: 14, display: "flex", gap: 6, flexWrap: "wrap" }}>
-                      {p.badges.map((b, i) => <div key={i} style={s.badge(b.c)}>{b.t}</div>)}
-                    </div>
-                  </div>
-                  <div style={{ padding: 20 }}>
-                    <div style={{ fontSize: 18, fontWeight: 800, color: "#173404", marginBottom: 6 }}>{p.name}</div>
-                    <div style={{ fontSize: 13, color: "#666", lineHeight: 1.6, marginBottom: 16 }}>{p.desc.substring(0, 90)}...</div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <div style={{ fontSize: 20, fontWeight: 900, color: "#3B6D11" }}>{p.price}<span style={{ fontSize: 13, fontWeight: 400, color: "#888" }}>{p.unit}</span></div>
-                      <div style={{ background: "#EAF3DE", color: "#27500A", border: "none", padding: "10px 18px", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>View Details →</div>
-                    </div>
-                  </div>
-                </div>
+                <div key={p.id} className="farm-card"
+  style={{ flex: isMobile ? "0 0 260px" : "0 0 300px" }}>
+
+  {/* Aurora blob */}
+  <div className="farm-card-aurora" />
+  {/* Glass panel */}
+  <div className="farm-card-bg" />
+
+  {/* IMAGE */}
+  <div style={{ position: "relative", height: 200, background: p.bg, overflow: "hidden", zIndex: 3, margin: 8, borderRadius: 14 }}
+    onClick={() => { setSelectedProduct(p); setCurrentPage("product"); setQty(1); setActivePhoto(0); window.scrollTo(0,0); }}>
+    {p.photos.length > 0
+      ? <img src={p.photos[0]} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s" }}
+          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
+          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"} />
+      : <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 90 }}>{p.emoji}</div>
+    }
+    {/* Badges */}
+    <div style={{ position: "absolute", top: 10, left: 10, display: "flex", gap: 6, flexWrap: "wrap" }}>
+      {p.badges.map((b, i) => <div key={i} style={s.badge(b.c)}>{b.t}</div>)}
+    </div>
+    {/* Price tag */}
+    <div style={{ position: "absolute", bottom: 10, right: 10, background: "rgba(255,255,255,0.95)", borderRadius: 20, padding: "4px 12px" }}>
+      <span style={{ fontSize: 15, fontWeight: 900, color: "#3B6D11" }}>{p.price}</span>
+      <span style={{ fontSize: 11, color: "#888" }}>{p.unit}</span>
+    </div>
+  </div>
+
+  {/* INFO */}
+  <div style={{ padding: "10px 16px 16px", position: "relative", zIndex: 3 }}>
+    <div style={{ fontSize: 17, fontWeight: 800, color: "#173404", marginBottom: 4 }}>{p.name}</div>
+    <div style={{ fontSize: 12, color: "#555", lineHeight: 1.6, marginBottom: 12, height: 36, overflow: "hidden" }}>{p.desc.substring(0, 75)}...</div>
+    <div style={{ display: "flex", gap: 8 }}>
+      <button
+        onClick={(e) => { e.stopPropagation(); setSelectedProduct(p); setCurrentPage("product"); setQty(1); setActivePhoto(0); window.scrollTo(0,0); }}
+        style={{ flex: 1, background: "#EAF3DE", color: "#27500A", border: "none", padding: "9px 8px", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+        onMouseEnter={e => { e.currentTarget.style.background = "#3B6D11"; e.currentTarget.style.color = "#fff"; }}
+        onMouseLeave={e => { e.currentTarget.style.background = "#EAF3DE"; e.currentTarget.style.color = "#27500A"; }}>
+        View Details →
+      </button>
+      <button
+        onClick={(e) => { e.stopPropagation(); addToCart(p, 1); }}
+        style={{ flex: 1, background: "#173404", color: "#fff", border: "none", padding: "9px 8px", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+        onMouseEnter={e => e.currentTarget.style.background = "#3B6D11"}
+        onMouseLeave={e => e.currentTarget.style.background = "#173404"}>
+        🛒 Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
               ))}
             </div>
           </div>

@@ -119,45 +119,47 @@ const isMobile = useIsMobile();
           </div>
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(280px, 1fr))", gap: isMobile ? 12 : 24 }}>
             {filtered.map((p) => (
-              <div key={p.id}
-                style={{ background: "#fff", border: "1px solid #e8f5e0", borderRadius: 24, overflow: "hidden", transition: "transform 0.3s, box-shadow 0.3s" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(59,109,17,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
+              <div key={p.id} className="farm-card" style={{}}>
 
-                {/* Product Image */}
-                <div style={{ height: 200, background: p.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 90, position: "relative" }}>
-                  {p.emoji}
-                  <div style={{ position: "absolute", top: 14, left: 14, display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {p.badges.map((b, i) => (
-                      <span key={i} style={{ background: "#3B6D11", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 20 }}>{b}</span>
-                    ))}
-                  </div>
-                </div>
+  {/* Aurora blob */}
+  <div className="farm-card-aurora" />
+  {/* Glass panel */}
+  <div className="farm-card-bg" />
 
-                {/* Product Info */}
-                <div style={{ padding: 20 }}>
-                  <div style={{ fontSize: 18, fontWeight: 800, color: "#173404", marginBottom: 6 }}>{p.name}</div>
-                  <div style={{ fontSize: 13, color: "#666", lineHeight: 1.6, marginBottom: 16 }}>{p.desc}</div>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: "#3B6D11" }}>
-                      ₹{p.price}<span style={{ fontSize: 13, fontWeight: 400, color: "#888" }}>{p.unit}</span>
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", gap: 10 }}>
-                    <button onClick={() => navigate(`/product/${p.id}`)} style={{ flex: 1, background: "#EAF3DE", color: "#27500A", border: "none", padding: "11px", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" }}
-                      onMouseEnter={e => { e.currentTarget.style.background = "#3B6D11"; e.currentTarget.style.color = "#fff"; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = "#EAF3DE"; e.currentTarget.style.color = "#27500A"; }}>
-                      View Details
-                    </button>
-                    <button onClick={() => { addToCart(p, 1); }} style={{ flex: 1, background: "#3B6D11", color: "#fff", border: "none", padding: "11px", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
-                      🛒 Add to Cart
-                    </button>
-<button onClick={() => handleOrder(p.name)} style={{ flex: 1, background: "#25D366", color: "#fff", border: "none", padding: "11px", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
-                      💬 Order
-                    </button>
-                  </div>
-                </div>
-              </div>
+  {/* IMAGE */}
+  <div style={{ position: "relative", height: 200, background: p.bg, overflow: "hidden", zIndex: 3, margin: 8, borderRadius: 14 }}>
+    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 90 }}>{p.emoji}</div>
+    <div style={{ position: "absolute", top: 10, left: 10, display: "flex", gap: 6, flexWrap: "wrap" }}>
+      {p.badges.map((b, i) => (
+        <span key={i} style={{ background: "#3B6D11", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 20 }}>{b}</span>
+      ))}
+    </div>
+    <div style={{ position: "absolute", bottom: 10, right: 10, background: "rgba(255,255,255,0.95)", borderRadius: 20, padding: "4px 12px" }}>
+      <span style={{ fontSize: 15, fontWeight: 900, color: "#3B6D11" }}>₹{p.price}</span>
+      <span style={{ fontSize: 11, color: "#888" }}>{p.unit}</span>
+    </div>
+  </div>
+
+  {/* INFO */}
+  <div style={{ padding: "10px 16px 16px", position: "relative", zIndex: 3 }}>
+    <div style={{ fontSize: 17, fontWeight: 800, color: "#173404", marginBottom: 4 }}>{p.name}</div>
+    <div style={{ fontSize: 12, color: "#555", lineHeight: 1.6, marginBottom: 12, height: 36, overflow: "hidden" }}>{p.desc}</div>
+    <div style={{ display: "flex", gap: 8 }}>
+      <button onClick={() => navigate(`/product/${p.id}`)}
+        style={{ flex: 1, background: "#EAF3DE", color: "#27500A", border: "none", padding: "9px 8px", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+        onMouseEnter={e => { e.currentTarget.style.background = "#3B6D11"; e.currentTarget.style.color = "#fff"; }}
+        onMouseLeave={e => { e.currentTarget.style.background = "#EAF3DE"; e.currentTarget.style.color = "#27500A"; }}>
+        View Details →
+      </button>
+      <button onClick={() => { addToCart(p, 1); }}
+        style={{ flex: 1, background: "#173404", color: "#fff", border: "none", padding: "9px 8px", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+        onMouseEnter={e => e.currentTarget.style.background = "#3B6D11"}
+        onMouseLeave={e => e.currentTarget.style.background = "#173404"}>
+        🛒 Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
             ))}
           </div>
         </div>
