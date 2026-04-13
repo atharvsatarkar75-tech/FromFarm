@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useIsMobile from "../useIsMobile";
+import MarqueeBanner from "../components/MarqueeBanner";
+import Navbar from "../components/Navbar";
 
 export default function OurStory() {
   const navigate = useNavigate();
@@ -7,18 +9,9 @@ const isMobile = useIsMobile();
 
   return (
     <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: "#1a1a1a", minHeight: "100vh" }}>
-
+<MarqueeBanner />
       {/* NAVBAR */}
-      <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 28px", height: 64, background: "#fff", borderBottom: "1px solid #e8f5e0", position: "sticky", top: 0, zIndex: 200 }}>
-        <button onClick={() => navigate("/")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#3B6D11", fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
-          ← Back
-        </button>
-        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }} onClick={() => navigate("/")}>
-          <div style={{ width: 38, height: 38, background: "#173404", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🌿</div>
-          <div style={{ fontSize: 17, fontWeight: 800, color: "#173404", letterSpacing: 2 }}>FROM <span style={{ color: "#639922" }}>FARM</span></div>
-        </div>
-        <div style={{ width: 60 }} />
-      </nav>
+      <Navbar />
 
       {/* HERO */}
       <div style={{ background: "#173404", padding: isMobile ? "40px 20px" : "80px 48px", textAlign: "center" }}>

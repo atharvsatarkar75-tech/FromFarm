@@ -4,7 +4,9 @@ import { useCart } from "../CartContext";
 import { db } from "../firebase/config";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import useIsMobile from "../useIsMobile";
-
+import MarqueeBanner from "../components/MarqueeBanner";
+import FadeIn from "../components/FadeIn";
+import SeasonalBanner from "../components/SeasonalBanner";
 export default function Home() {
   const navigate = useNavigate();
 const { totalItems, setCartOpen, addToCart } = useCart();
@@ -94,7 +96,7 @@ const isMobile = useIsMobile();
 
   const s = {
     page: { fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: "#1a1a1a", background: "#fff" },
-    nav: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 28px", height: 64, background: "#fff", borderBottom: "1px solid #e8f5e0", position: "sticky", top: 0, zIndex: 200 },
+    nav: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 28px", height: 64, background: "rgba(23,52,4,0.75)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderBottom: "1px solid rgba(99,153,34,0.3)", position: "sticky", top: 0, zIndex: 200 },
     badge: (c) => ({ fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20, letterSpacing: "0.5px", background: c === "green" ? "#3B6D11" : c === "amber" ? "#BA7517" : "#173404", color: c === "dark" ? "#C0DD97" : "#fff" }),
   };
 
@@ -102,13 +104,15 @@ const isMobile = useIsMobile();
     const p = selectedProduct;
     return (
       <div style={s.page}>
+        <SeasonalBanner />
+<MarqueeBanner />
         <nav style={s.nav}>
           <div onClick={() => { setCurrentPage("home"); setSelectedProduct(null); }} style={{ display: "flex", flexDirection: "column", gap: 5, cursor: "pointer", padding: 6 }}>
             {[0,1,2].map(i => <span key={i} style={{ display: "block", width: 22, height: 2, background: "#173404", borderRadius: 2 }} />)}
           </div>
           <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }} onClick={() => { setCurrentPage("home"); setSelectedProduct(null); }}>
             <div style={{ width: 38, height: 38, background: "#173404", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🌿</div>
-            <div style={{ fontSize: 17, fontWeight: 800, color: "#173404", letterSpacing: 2 }}>FROM <span style={{ color: "#639922" }}>FARM</span></div>
+            <div style={{ fontSize: 17, fontWeight: 800, color: "#fff", letterSpacing: 2 }}>FROM <span style={{ color: "#97C459" }}>FARM</span></div>
           </div>
           <div style={{ display: "flex", gap: 10 }}>
             <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#EAF3DE", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", position: "relative" }} onClick={() => setCartOpen(true)}>
@@ -183,6 +187,7 @@ const isMobile = useIsMobile();
 
   return (
     <div style={s.page}>
+      <MarqueeBanner />
       {drawerOpen && <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 250 }} />}
       <div style={{ position: "fixed", top: 0, left: drawerOpen ? 0 : -280, width: 280, height: "100%", background: "#173404", zIndex: 300, transition: "left 0.35s cubic-bezier(0.4,0,0.2,1)", paddingTop: 72 }}>
         <button onClick={() => setDrawerOpen(false)} style={{ position: "absolute", top: 20, right: 20, width: 36, height: 36, background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "50%", cursor: "pointer", color: "#C0DD97", fontSize: 18 }}>✕</button>
@@ -219,10 +224,8 @@ const isMobile = useIsMobile();
       )}
 
       <div id="hero-section" style={{ position: "relative", minHeight: 560, background: "#173404", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-        <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <img src={heroImgs[heroBg]} alt="Farm" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.35, transition: "opacity 0.8s" }} />
-        </div>
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(23,52,4,0.92) 0%, rgba(23,52,4,0.5) 60%, rgba(23,52,4,0.2) 100%)" }} />
+        <img src={heroImgs[heroBg]} alt="Farm" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.75 }} />
+<div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(23,52,4,0.6) 0%, rgba(23,52,4,0.3) 60%, rgba(23,52,4,0.05) 100%)" }} />
         <div style={{ position: "relative", zIndex: 2, padding: isMobile ? "40px 20px" : "60px 48px", maxWidth: 620 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(150,196,89,0.2)", color: "#97C459", fontSize: 11, fontWeight: 700, padding: "6px 16px", borderRadius: 25, marginBottom: 20, letterSpacing: "1.5px", border: "1px solid rgba(150,196,89,0.3)" }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#97C459" }}></div>
@@ -293,7 +296,8 @@ const isMobile = useIsMobile();
         </div>
       </div>
 
-      <div style={{ background: "#fafff5", padding: isMobile ? "40px 16px" : "72px 40px" }}>
+      <FadeIn>
+<div style={{ background: "#fafff5", padding: isMobile ? "40px 16px" : "72px 40px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center", marginBottom: 40 }}>
           <div style={{ display: "inline-block", background: "#EAF3DE", color: "#3B6D11", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 25, marginBottom: 10, letterSpacing: 1, textTransform: "uppercase" }}>Why Choose Us</div>
           <div style={{ fontSize: 36, fontWeight: 900, color: "#173404" }}>The difference is real</div>
@@ -310,6 +314,7 @@ const isMobile = useIsMobile();
           ))}
         </div>
       </div>
+</FadeIn>
 
       <div id="story-sec" style={{ background: "#173404", padding: isMobile ? "40px 20px" : "80px 48px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>

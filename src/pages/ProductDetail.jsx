@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import useIsMobile from "../useIsMobile";
+import MarqueeBanner from "../components/MarqueeBanner";
+import SeasonalBanner from "../components/SeasonalBanner";
+import Navbar from "../components/Navbar";
 
 const ALL_PRODUCTS = [
   {
@@ -119,17 +122,11 @@ const isMobile = useIsMobile();
 
   return (
     <div style={{ fontFamily: "'Segoe UI', sans-serif", color: "#1a1a1a", minHeight: "100vh" }}>
+      <SeasonalBanner />
+<MarqueeBanner />
 
       {/* NAVBAR */}
-      <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 32px", background: "#fff", borderBottom: "1px solid #e5e5e5", position: "sticky", top: 0, zIndex: 100 }}>
-        <button onClick={() => navigate("/")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#3B6D11", fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
-          ← Back
-        </button>
-        <div style={{ fontSize: 18, fontWeight: 800, color: "#3B6D11", letterSpacing: 2 }}>
-          FROM <span style={{ color: "#97C459" }}>FARM</span>
-        </div>
-        <div style={{ width: 60 }} />
-      </nav>
+      <Navbar />
 
       {/* BREADCRUMB */}
       <div style={{ padding: "12px 32px", fontSize: 13, color: "#888" }}>
