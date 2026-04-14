@@ -7,19 +7,23 @@ import useIsMobile from "../useIsMobile";
 import MarqueeBanner from "../components/MarqueeBanner";
 import FadeIn from "../components/FadeIn";
 import SeasonalBanner from "../components/SeasonalBanner";
+import Footer from "../components/Footer";
 export default function Home() {
   const navigate = useNavigate();
 const { totalItems, setCartOpen, addToCart } = useCart();
 const isMobile = useIsMobile();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [activePhoto, setActivePhoto] = useState(0);
   const [heroBg, setHeroBg] = useState(0);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setHeroBg(prev => (prev + 1) % heroImgs.length);
+  }, 3000);
+  return () => clearInterval(interval);
+}, []);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState("home");
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [qty, setQty] = useState(1);
   const [slideIndex, setSlideIndex] = useState(0);
   const trackRef = useRef(null);
   const whatsapp = import.meta.env.VITE_WHATSAPP_NUMBER;
@@ -51,6 +55,22 @@ const isMobile = useIsMobile();
       features: ["Deep ruby red colour arils", "Rich in antioxidants and Vitamin C", "Zero pesticides or chemicals ever", "Hand-sorted for quality and size", "Fresh from our Maharashtra farm"],
       reviews: [{ n: "Kavita L.", s: 5, t: "The juice from these pomegranates is a beautiful deep red. So much better than store-bought." }, { n: "Mohan T.", s: 4, t: "Fresh and very juicy. My kids love them. Great quality at a fair price." }]
     },
+    {
+  id: "tamarind", name: "Tamarind (Imli)", price: "₹80", unit: "/kg",
+  emoji: "🫘", bg: "#F5E6D3", photos: [],
+  badges: [{ t: "ORGANIC", c: "brown" }],
+  desc: "Sun-dried organic tamarind from our Maharashtra farm. Rich tangy flavour perfect for cooking, chutneys and drinks.",
+  features: ["Sun-dried naturally on the farm", "Rich tangy authentic flavour", "Zero chemicals or preservatives", "Perfect for cooking and chutneys"],
+  reviews: [{ n: "Sunita P.", s: 5, t: "Best tamarind I have ever used. So fresh and tangy!" }, { n: "Ramesh K.", s: 5, t: "Makes the best imli chutney. Ordering every month." }]
+},
+{
+  id: "amla", name: "Indian Gooseberry (Amla)", price: "₹60", unit: "/kg",
+  emoji: "🍃", bg: "#E8F5E9", photos: [],
+  badges: [{ t: "ORGANIC", c: "green" }],
+  desc: "Fresh organic Amla — one of nature's richest sources of Vitamin C. Grown on our certified organic farm in Maharashtra.",
+  features: ["One of nature's richest Vitamin C sources", "100% organic, zero chemicals", "Fresh from our Maharashtra farm", "Great for health and immunity"],
+  reviews: [{ n: "Meena S.", s: 5, t: "So fresh and pure. Makes amazing amla juice!" }, { n: "Vijay T.", s: 5, t: "Best amla I have had. Very juicy and sour." }]
+},
     {
       id: "box", name: "Farm Box", price: "₹1200", unit: "/box",
       emoji: "📦", bg: "#F1F8E9", photos: [],
@@ -87,7 +107,6 @@ const isMobile = useIsMobile();
 
   const scrollToSection = (id) => {
     setDrawerOpen(false);
-    setCurrentPage("home");
     setTimeout(() => {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -97,93 +116,10 @@ const isMobile = useIsMobile();
   const s = {
     page: { fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: "#1a1a1a", background: "#fff" },
     nav: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 28px", height: 64, background: "rgba(23,52,4,0.75)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderBottom: "1px solid rgba(99,153,34,0.3)", position: "sticky", top: 0, zIndex: 200 },
-    badge: (c) => ({ fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20, letterSpacing: "0.5px", background: c === "green" ? "#3B6D11" : c === "amber" ? "#BA7517" : "#173404", color: c === "dark" ? "#C0DD97" : "#fff" }),
+    badge: (c) => ({ fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20, letterSpacing: "0.5px", background: c === "green" ? "#3B6D11" : c === "amber" ? "#BA7517" : c === "brown" ? "#6B3A1F" : "#173404", color: c === "dark" ? "#C0DD97" : "#fff" }),
   };
 
-  if (currentPage === "product" && selectedProduct) {
-    const p = selectedProduct;
-    return (
-      <div style={s.page}>
-        <SeasonalBanner />
-<MarqueeBanner />
-        <nav style={s.nav}>
-          <div onClick={() => { setCurrentPage("home"); setSelectedProduct(null); }} style={{ display: "flex", flexDirection: "column", gap: 5, cursor: "pointer", padding: 6 }}>
-            {[0,1,2].map(i => <span key={i} style={{ display: "block", width: 22, height: 2, background: "#173404", borderRadius: 2 }} />)}
-          </div>
-          <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }} onClick={() => { setCurrentPage("home"); setSelectedProduct(null); }}>
-            <div style={{ width: 38, height: 38, background: "#173404", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🌿</div>
-            <div style={{ fontSize: 17, fontWeight: 800, color: "#fff", letterSpacing: 2 }}>FROM <span style={{ color: "#97C459" }}>FARM</span></div>
-          </div>
-          <div style={{ display: "flex", gap: 10 }}>
-            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#EAF3DE", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", position: "relative" }} onClick={() => setCartOpen(true)}>
-              🛒
-              <div style={{ position: "absolute", top: -2, right: -2, width: 17, height: 17, background: "#3B6D11", borderRadius: "50%", fontSize: 10, fontWeight: 700, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>{totalItems}</div>
-            </div>
-          </div>
-        </nav>
-
-        <button onClick={() => { setCurrentPage("home"); setSelectedProduct(null); setQty(1); }} style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#3B6D11", fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "20px 32px", border: "none", background: "transparent" }}>
-          ← Back to products
-        </button>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, padding: "0 48px 72px", maxWidth: 1100, margin: "0 auto" }}>
-          <div>
-            <div style={{ borderRadius: 20, overflow: "hidden", height: 400, background: p.photos.length > 0 ? "#000" : p.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 120, marginBottom: 12 }}>
-              {p.photos.length > 0 ? <img id="pd-main" src={p.photos[activePhoto]} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : p.emoji}
-            </div>
-            {p.photos.length > 0 && (
-              <div style={{ display: "flex", gap: 10 }}>
-                {p.photos.map((photo, idx) => (
-                  <div key={idx} onClick={() => setActivePhoto(idx)} style={{ width: 76, height: 76, borderRadius: 12, overflow: "hidden", cursor: "pointer", border: activePhoto === idx ? "2px solid #3B6D11" : "2px solid #e5e5e5" }}>
-                    <img src={photo} alt={`View ${idx + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div>
-            <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-              {p.badges.map((b, i) => <div key={i} style={s.badge(b.c)}>{b.t}</div>)}
-            </div>
-            <div style={{ fontSize: 34, fontWeight: 900, color: "#173404", marginBottom: 8 }}>{p.name}</div>
-            <div style={{ fontSize: 30, fontWeight: 900, color: "#3B6D11", marginBottom: 20 }}>{p.price}<span style={{ fontSize: 16, fontWeight: 400, color: "#888" }}>{p.unit}</span></div>
-            <div style={{ fontSize: 15, color: "#555", lineHeight: 1.9, marginBottom: 24 }}>{p.desc}</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
-              {p.features.map((f, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, color: "#333" }}>
-                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#3B6D11", flexShrink: 0 }}></div>
-                  {f}
-                </div>
-              ))}
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#173404" }}>Quantity:</div>
-              <div style={{ display: "flex", alignItems: "center", border: "2px solid #e5e5e5", borderRadius: 25, overflow: "hidden" }}>
-                <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: 42, height: 42, background: "#EAF3DE", border: "none", fontSize: 20, cursor: "pointer", fontWeight: 700, color: "#173404" }}>−</button>
-                <div style={{ width: 52, textAlign: "center", fontSize: 16, fontWeight: 700, color: "#173404" }}>{qty}</div>
-                <button onClick={() => setQty(q => q + 1)} style={{ width: 42, height: 42, background: "#EAF3DE", border: "none", fontSize: 20, cursor: "pointer", fontWeight: 700, color: "#173404" }}>+</button>
-              </div>
-            </div>
-            <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
-              <button onClick={() => { addToCart(p, qty); }} style={{ flex: 1, background: "#3B6D11", color: "#fff", border: "none", padding: 16, borderRadius: 25, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Add to Cart</button>
-              <button onClick={() => handleOrder(p.name)} style={{ flex: 1, background: "#25D366", color: "#fff", border: "none", padding: 16, borderRadius: 25, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Order on WhatsApp</button>
-            </div>
-            <div style={{ borderTop: "1px solid #e5e5e5", paddingTop: 28 }}>
-              <div style={{ fontSize: 20, fontWeight: 800, color: "#173404", marginBottom: 20 }}>Customer Reviews</div>
-              {p.reviews.map((r, i) => (
-                <div key={i} style={{ background: "#fafff5", border: "1px solid #e8f5e0", borderRadius: 16, padding: 18, marginBottom: 12 }}>
-                  <div style={{ color: "#BA7517", fontSize: 15, marginBottom: 4 }}>{"★".repeat(r.s)}</div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#173404", marginBottom: 4 }}>{r.n}</div>
-                  <div style={{ fontSize: 13, color: "#555", lineHeight: 1.6 }}>{r.t}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  
 
   return (
     <div style={s.page}>
@@ -224,7 +160,19 @@ const isMobile = useIsMobile();
       )}
 
       <div id="hero-section" style={{ position: "relative", minHeight: 560, background: "#173404", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-        <img src={heroImgs[heroBg]} alt="Farm" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.75 }} />
+        {heroImgs.map((img, idx) => (
+  <img
+    key={img}
+    src={img}
+    alt="Farm"
+    style={{
+      position: "absolute", inset: 0, width: "100%", height: "100%",
+      objectFit: "cover",
+      opacity: heroBg === idx ? 0.75 : 0,
+      transition: "opacity 1.2s ease-in-out",
+    }}
+  />
+))}
 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(23,52,4,0.6) 0%, rgba(23,52,4,0.3) 60%, rgba(23,52,4,0.05) 100%)" }} />
         <div style={{ position: "relative", zIndex: 2, padding: isMobile ? "40px 20px" : "60px 48px", maxWidth: 620 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(150,196,89,0.2)", color: "#97C459", fontSize: 11, fontWeight: 700, padding: "6px 16px", borderRadius: 25, marginBottom: 20, letterSpacing: "1.5px", border: "1px solid rgba(150,196,89,0.3)" }}>
@@ -256,7 +204,7 @@ const isMobile = useIsMobile();
         </div>
       </div>
 
-      <div id="products-sec" style={{ padding: isMobile ? "40px 16px" : "72px 40px" }}>
+      <div id="products-sec" style={{ padding: isMobile ? "40px 16px" : "72px 40px", background: "linear-gradient(135deg, #FFFBEB 0%, #FFF3CD 50%, #FAEEDA 100%)" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 40 }}>
             <div>
@@ -282,7 +230,7 @@ const isMobile = useIsMobile();
 
   {/* IMAGE */}
   <div style={{ position: "relative", height: 200, background: p.bg, overflow: "hidden", zIndex: 3, margin: 8, borderRadius: 14 }}
-    onClick={() => { setSelectedProduct(p); setCurrentPage("product"); setQty(1); setActivePhoto(0); window.scrollTo(0,0); }}>
+    onClick={() => navigate(`/product/${p.id}`)}>
     {p.photos.length > 0
       ? <img src={p.photos[0]} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s" }}
           onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
@@ -306,7 +254,7 @@ const isMobile = useIsMobile();
     <div style={{ fontSize: 12, color: "#555", lineHeight: 1.6, marginBottom: 12, height: 36, overflow: "hidden" }}>{p.desc.substring(0, 75)}...</div>
     <div style={{ display: "flex", gap: 8 }}>
       <button
-        onClick={(e) => { e.stopPropagation(); setSelectedProduct(p); setCurrentPage("product"); setQty(1); setActivePhoto(0); window.scrollTo(0,0); }}
+        onClick={(e) => { e.stopPropagation(); navigate(`/product/${p.id}`); }}
         style={{ flex: 1, background: "#EAF3DE", color: "#27500A", border: "none", padding: "9px 8px", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
         onMouseEnter={e => { e.currentTarget.style.background = "#3B6D11"; e.currentTarget.style.color = "#fff"; }}
         onMouseLeave={e => { e.currentTarget.style.background = "#EAF3DE"; e.currentTarget.style.color = "#27500A"; }}>
@@ -374,25 +322,52 @@ const isMobile = useIsMobile();
             </div>
           </div>
 
+          {/* STATS ROW */}
+          <div style={{ background: "linear-gradient(135deg, #FFFBEB 0%, #FFF3CD 50%, #FAEEDA 100%)", borderRadius: 20, padding: isMobile ? "28px 20px" : "36px 48px", marginBottom: 48, display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 24, textAlign: "center" }}>
+            {[["100+","Acres of Farm Land"],["60+","Years of Farming"],["4","Crops Grown"],["🌍","Export Quality"]].map(([num, label]) => (
+              <div key={label}>
+                <div style={{ fontSize: isMobile ? 32 : 42, fontWeight: 900, color: "#173404", lineHeight: 1 }}>{num}</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#BA7517", marginTop: 8, letterSpacing: 0.5 }}>{label}</div>
+              </div>
+            ))}
+          </div>
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 48, marginBottom: 48 }}>
             <div style={{ fontSize: 22, fontWeight: 800, color: "#C0DD97", marginBottom: 32, textAlign: "center" }}>Our Journey</div>
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: isMobile ? 24 : 0 }}>
-              {[["🌱","1962","Grandfather plants first mango trees on our Maharashtra land"],["🌳","1985","Farm grows to include pomegranates. Second generation takes over"],["🏆","2010","Certified organic. Zero chemicals pledge made by our family"],["📱","2024","From Farm launches — bringing our fruit direct to your table"]].map(([icon, year, text]) => (
-                <div key={year} style={{ textAlign: "center", padding: "0 16px" }}>
-                  <div style={{ width: 48, height: 48, background: "#3B6D11", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", fontSize: 18, border: "3px solid #173404" }}>{icon}</div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#639922", marginBottom: 6, letterSpacing: 1 }}>{year}</div>
-                  <div style={{ fontSize: 13, color: "#97C459", lineHeight: 1.6 }}>{text}</div>
-                </div>
-              ))}
-            </div>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 20 }}>
+  {[["🌱","1962","Grandfather plants first mango trees on our Maharashtra land"],["🌳","1985","Farm grows to include pomegranates. Second generation takes over"],["🏆","2010","Certified organic. Zero chemicals pledge made by our family"],["📱","2024","From Farm launches — bringing our fruit direct to your table"]].map(([icon, year, text]) => (
+    <div key={year} className="farm-card" style={{ padding: 0 }}
+      onMouseEnter={e => e.currentTarget.style.transform = "translateY(-8px)"}
+      onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
+      <div className="farm-card-aurora" style={{ width: 120, height: 120, opacity: 0.6 }} />
+      <div className="farm-card-bg" />
+      <div style={{ position: "relative", zIndex: 3, padding: "24px 20px", textAlign: "center" }}>
+        <div style={{ width: 56, height: 56, background: "rgba(23,52,4,0.1)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", fontSize: 24, border: "2px solid rgba(99,153,34,0.3)" }}>{icon}</div>
+        <div style={{ fontSize: 22, fontWeight: 900, color: "#173404", marginBottom: 6, letterSpacing: 1 }}>{year}</div>
+        <div style={{ fontSize: 13, color: "#444", lineHeight: 1.6 }}>{text}</div>
+      </div>
+    </div>
+  ))}
+</div>
           </div>
 
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 48 }}>
+            {/* MANGO SEASON BANNER */}
+<div style={{ background: "linear-gradient(135deg, #FAEEDA 0%, #FFF3CD 100%)", borderRadius: 16, padding: "16px 24px", marginBottom: 32, display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap", border: "2px solid #EF9F27" }}>
+  <div style={{ fontSize: 28 }}>🥭</div>
+  <div style={{ textAlign: "center" }}>
+    <div style={{ fontSize: isMobile ? 16 : 20, fontWeight: 900, color: "#173404" }}>Mango Season is Live!</div>
+    <div style={{ fontSize: 13, color: "#BA7517", fontWeight: 600 }}>Limited stock available · Order now before it runs out</div>
+  </div>
+  <div style={{ fontSize: 28 }}>🥭</div>
+  <button onClick={() => navigate("/shop")} style={{ background: "#BA7517", color: "#fff", border: "none", padding: "10px 22px", borderRadius: 25, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+    Order Now →
+  </button>
+</div>
             <div style={{ textAlign: "center", marginBottom: 28 }}>
               <div style={{ display: "inline-block", background: "rgba(150,196,89,0.2)", color: "#97C459", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 25, marginBottom: 10, letterSpacing: 1 }}>Watch</div>
               <div style={{ fontSize: 28, fontWeight: 900, color: "#C0DD97", marginTop: 10 }}>A day on our farm</div>
             </div>
-            <div onClick={() => alert("Add your farm video URL here!")} style={{ background: "#27500A", borderRadius: 24, height: 340, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, cursor: "pointer" }}>
+            <div onClick={() => alert("Add your farm video URL here!")} style={{ background: "#27500A", borderRadius: 24, height: isMobile ? 260 : 520, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, cursor: "pointer" }}>
               <div style={{ width: 72, height: 72, background: "#fff", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <div style={{ width: 0, height: 0, borderTop: "14px solid transparent", borderBottom: "14px solid transparent", borderLeft: "22px solid #173404", marginLeft: 5 }}></div>
               </div>
@@ -448,23 +423,7 @@ const isMobile = useIsMobile();
         </div>
       </div>
 
-      <div style={{ background: "#173404", padding: isMobile ? "40px 20px 0" : "56px 48px 0" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", gap: isMobile ? 24 : 48, paddingBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-          <div>
-            <div style={{ fontSize: 22, fontWeight: 900, color: "#C0DD97", letterSpacing: 2, marginBottom: 12 }}>FROM <span style={{ color: "#639922" }}>FARM</span></div>
-            <div style={{ fontSize: 14, color: "#639922", lineHeight: 1.7, maxWidth: 240 }}>Organic mangoes and pomegranates grown with love in Maharashtra. From our family farm, to your table.</div>
-          </div>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#97C459", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>Products</div>
-            {["Alphonso Mango","Kesar Mango","Pomegranate","Farm Box"].map(p => <div key={p} style={{ fontSize: 14, color: "#639922", marginBottom: 10, cursor: "pointer" }}>{p}</div>)}
-          </div>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#97C459", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>Connect</div>
-            {["WhatsApp Us","Instagram","Our Story","Contact"].map(l => <div key={l} style={{ fontSize: 14, color: "#639922", marginBottom: 10, cursor: "pointer" }}>{l}</div>)}
-          </div>
-        </div>
-        <div style={{ textAlign: "center", padding: 20, fontSize: 13, color: "#639922" }}>Maharashtra, India · Organic Certified · fromfarm.co.in · © 2026</div>
-      </div>
+      <Footer />
     </div>
   );
 }

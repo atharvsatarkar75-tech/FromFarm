@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useIsMobile from "../useIsMobile";
 import MarqueeBanner from "../components/MarqueeBanner";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function OurStory() {
   const navigate = useNavigate();
@@ -159,11 +160,7 @@ const isMobile = useIsMobile();
       </div>
 
       {/* FOOTER */}
-      <footer style={{ background: "#173404", padding: "24px 32px", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, fontSize: 13, color: "#639922" }}>
-        <div style={{ fontSize: 18, fontWeight: 800, color: "#C0DD97", letterSpacing: 2 }}>FROM FARM</div>
-        <div>Maharashtra, India · Organic Since 2000s</div>
-        <div>fromfarm.co.in · © 2026</div>
-      </footer>
+      <Footer />
 
     </div>
   );

@@ -5,6 +5,7 @@ import useIsMobile from "../useIsMobile";
 import MarqueeBanner from "../components/MarqueeBanner";
 import SeasonalBanner from "../components/SeasonalBanner";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const ALL_PRODUCTS = [
   {
@@ -14,7 +15,7 @@ const ALL_PRODUCTS = [
     unit: "/dozen",
     emoji: "🥭",
     bg: "#FAEEDA",
-    badges: ["ORGANIC"],
+    badges: ["ORGANIC"],accentColor: "#BA7517",
     desc: "The Alphonso mango — known as the King of Mangoes — is celebrated worldwide for its rich, creamy texture and incredibly sweet flavour. Our Alphonso mangoes are grown on the same land our grandfather planted in 1962.",
     features: [
       "Naturally sun-ripened on the tree",
@@ -35,7 +36,7 @@ const ALL_PRODUCTS = [
     unit: "/dozen",
     emoji: "🥭",
     bg: "#FFF3CD",
-    badges: ["GI TAGGED", "FROM OUR FARM"],
+    badges: ["GI TAGGED", "FROM OUR FARM"],accentColor: "#BA7517",
     desc: "Kesar mango is a GI-tagged variety celebrated for its distinctive saffron colour and incredible fragrance. Our Kesar mangoes come straight from our Maharashtra farm — no cold storage, no preservatives.",
     features: [
       "GI-tagged certified Kesar variety",
@@ -56,7 +57,7 @@ const ALL_PRODUCTS = [
     unit: "/kg",
     emoji: "❤️",
     bg: "#FBEAF0",
-    badges: ["ORGANIC"],
+    badges: ["ORGANIC"],accentColor: "#A32D2D",
     desc: "Our pomegranates are grown on the same organic land as our mangoes. Deep ruby red arils bursting with juice — rich in antioxidants and naturally sweet.",
     features: [
       "Deep ruby red, juicy seeds",
@@ -71,13 +72,14 @@ const ALL_PRODUCTS = [
     ],
   },
   {
+    
     id: "box",
     name: "Farm Box",
     price: "₹1200",
     unit: "/box",
     emoji: "📦",
     bg: "#EAF3DE",
-    badges: ["BESTSELLER"],
+    badges: ["BESTSELLER"],accentColor: "#3B6D11",
     desc: "Our curated Farm Box contains a seasonal selection of our finest fruits — a mix of Alphonso and Kesar mangoes, fresh pomegranates, and whatever is best from the farm that week.",
     features: [
       "Mix of Alphonso and Kesar mangoes",
@@ -89,6 +91,48 @@ const ALL_PRODUCTS = [
       { n: "Ritu B.", s: 5, t: "Sent this as a gift. Everyone was so happy." },
       { n: "Deepak S.", s: 5, t: "Great value. Fresh and beautifully packed." },
       { n: "Pooja M.", s: 5, t: "Ordering every season now. Love the variety." },
+    ],
+  },
+  {
+    id: "tamarind",
+    name: "Tamarind (Imli)",
+    price: "₹80",
+    unit: "/kg",
+    emoji: "🫘",
+    bg: "#F5E6D3",
+    badges: ["ORGANIC"],accentColor: "#6B3A1F",
+    desc: "Sun-dried organic tamarind from our Maharashtra farm. Rich tangy flavour perfect for cooking, chutneys and drinks. Grown with zero chemicals on our certified organic land.",
+    features: [
+      "Sun-dried naturally on the farm",
+      "Rich tangy authentic flavour",
+      "Zero chemicals or preservatives",
+      "Perfect for cooking and chutneys",
+    ],
+    reviews: [
+      { n: "Sunita P.", s: 5, t: "Best tamarind I have ever used. So fresh and tangy!" },
+      { n: "Ramesh K.", s: 5, t: "Makes the best imli chutney. Ordering every month." },
+      { n: "Priya M.", s: 5, t: "Authentic farm taste. Much better than market tamarind." },
+    ],
+  },
+  {
+    id: "amla",
+    name: "Indian Gooseberry (Amla)",
+    price: "₹60",
+    unit: "/kg",
+    emoji: "🍃",
+    bg: "#E8F5E9",
+    badges: ["ORGANIC"],accentColor: "#2E7D32",
+    desc: "Fresh organic Amla — one of nature's richest sources of Vitamin C. Grown on our certified organic farm in Maharashtra with zero chemicals or pesticides.",
+    features: [
+      "One of nature's richest Vitamin C sources",
+      "100% organic, zero chemicals",
+      "Fresh from our Maharashtra farm",
+      "Great for health and immunity",
+    ],
+    reviews: [
+      { n: "Meena S.", s: 5, t: "So fresh and pure. Makes amazing amla juice!" },
+      { n: "Vijay T.", s: 5, t: "Best amla I have had. Very juicy and sour." },
+      { n: "Anita B.", s: 5, t: "Ordering every week for my family. Highly recommend!" },
     ],
   },
 ];
@@ -148,7 +192,7 @@ export default function ProductDetail() {
 
         {/* LEFT — Glass Image Card */}
         <div className="farm-card" style={{ padding: 0, background: "rgba(255,255,255,0.25)" }}>
-          <div className="farm-card-aurora" style={{ width: 280, height: 280, top: "40%", left: "50%" }} />
+          <div className="farm-card-aurora" style={{ width: 280, height: 280, top: "40%", left: "50%", background: `radial-gradient(circle, ${product.accentColor}, transparent)` }} />
           <div className="farm-card-bg" />
           <div style={{ position: "relative", zIndex: 3, padding: 24 }}>
             {/* Main image */}
@@ -261,11 +305,9 @@ export default function ProductDetail() {
       </div>
 
       {/* FOOTER */}
-      <footer style={{ padding: "24px 32px", borderTop: "1px solid #e5e5e5", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, fontSize: 13, color: "#888", background: "#fff" }}>
-        <div style={{ fontSize: 18, fontWeight: 800, color: "#3B6D11", letterSpacing: 2 }}>FROM FARM</div>
-        <div>Maharashtra, India · Organic Since 1962</div>
-        <div>fromfarm.co.in · © 2026</div>
-      </footer>
+      {/* FOOTER */}
+      <Footer />
+
     </div>
   );
 }

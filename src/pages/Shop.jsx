@@ -5,35 +5,54 @@ import useIsMobile from "../useIsMobile";
 import MarqueeBanner from "../components/MarqueeBanner";
 import Navbar from "../components/Navbar";
 import SeasonalBanner from "../components/SeasonalBanner";
+import Footer from "../components/Footer";
 
 const ALL_PRODUCTS = [
   {
     id: "alphonso", name: "Alphonso Mango", price: 800, unit: "/dozen",
     emoji: "🥭", bg: "#FFF3E0", category: "Mango", popularity: 2,
     badges: ["ORGANIC"],
+    badgeColor: "#BA7517", accentColor: "#BA7517",
     desc: "The Alphonso mango — known as the King of Mangoes — celebrated worldwide for its rich, creamy texture and incredibly sweet flavour.",
   },
   {
     id: "kesar", name: "Kesar Mango", price: 700, unit: "/dozen",
     emoji: "🥭", bg: "#FFFDE7", category: "Mango", popularity: 1,
     badges: ["GI TAGGED", "FROM OUR FARM"],
+    badgeColor: "#BA7517", accentColor: "#BA7517",
     desc: "Kesar mango is a GI-tagged variety celebrated for its distinctive saffron colour and incredibly sweet fragrance.",
   },
   {
     id: "pomegranate", name: "Pomegranate", price: 120, unit: "/kg",
     emoji: "❤️", bg: "#FCE4EC", category: "Pomegranate", popularity: 3,
     badges: ["ORGANIC"],
+    badgeColor: "#A32D2D", accentColor: "#A32D2D",
     desc: "Deep ruby red arils bursting with sweet-tart juice, rich in antioxidants and vitamins. Grown without any pesticides.",
+  },
+  {
+    id: "tamarind", name: "Tamarind (Imli)", price: 80, unit: "/kg",
+    emoji: "🫘", bg: "#F5E6D3", category: "Other", popularity: 5,
+    badges: ["ORGANIC"],
+    badgeColor: "#6B3A1F", accentColor: "#6B3A1F",
+    desc: "Sun-dried organic tamarind from our Maharashtra farm. Rich tangy flavour perfect for cooking, chutneys and drinks.",
+  },
+  {
+    id: "amla", name: "Indian Gooseberry (Amla)", price: 60, unit: "/kg",
+    emoji: "🍃", bg: "#E8F5E9", category: "Other", popularity: 6,
+    badges: ["ORGANIC"],
+    badgeColor: "#2E7D32", accentColor: "#2E7D32",
+    desc: "Fresh organic Amla — one of nature's richest sources of Vitamin C. Grown on our certified organic farm in Maharashtra.",
   },
   {
     id: "box", name: "Farm Box", price: 1200, unit: "/box",
     emoji: "📦", bg: "#F1F8E9", category: "Box", popularity: 4,
     badges: ["BESTSELLER"],
+    badgeColor: "#3B6D11", accentColor: "#3B6D11",
     desc: "Our curated Farm Box contains a seasonal selection of our very best fruits — handpicked and packed fresh on the day of delivery.",
   },
 ];
 
-const CATEGORIES = ["All", "Mango", "Pomegranate", "Box"];
+const CATEGORIES = ["All", "Mango", "Pomegranate", "Other", "Box"];
 const SORT_OPTIONS = [
   { label: "Most Popular", value: "popularity" },
   { label: "Price: Low to High", value: "price_asc" },
@@ -122,7 +141,7 @@ const isMobile = useIsMobile();
               <div key={p.id} className="farm-card" style={{}}>
 
   {/* Aurora blob */}
-  <div className="farm-card-aurora" />
+  <div className="farm-card-aurora" style={{ background: `radial-gradient(circle, ${p.accentColor}, transparent)` }} />
   {/* Glass panel */}
   <div className="farm-card-bg" />
 
@@ -131,11 +150,11 @@ const isMobile = useIsMobile();
     <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 90 }}>{p.emoji}</div>
     <div style={{ position: "absolute", top: 10, left: 10, display: "flex", gap: 6, flexWrap: "wrap" }}>
       {p.badges.map((b, i) => (
-        <span key={i} style={{ background: "#3B6D11", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 20 }}>{b}</span>
+        <span key={i} style={{ background: p.badgeColor, color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 20 }}>{b}</span>
       ))}
     </div>
     <div style={{ position: "absolute", bottom: 10, right: 10, background: "rgba(255,255,255,0.95)", borderRadius: 20, padding: "4px 12px" }}>
-      <span style={{ fontSize: 15, fontWeight: 900, color: "#3B6D11" }}>₹{p.price}</span>
+      <span style={{ fontSize: 15, fontWeight: 900, color: p.accentColor }}>₹{p.price}</span>
       <span style={{ fontSize: 11, color: "#888" }}>{p.unit}</span>
     </div>
   </div>
@@ -176,11 +195,8 @@ const isMobile = useIsMobile();
       </div>
 
       {/* FOOTER */}
-      <footer style={{ background: "#fff", padding: "24px 32px", borderTop: "1px solid #e8f5e0", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, fontSize: 13, color: "#888" }}>
-        <div style={{ fontSize: 18, fontWeight: 800, color: "#3B6D11", letterSpacing: 2 }}>FROM FARM</div>
-        <div>Maharashtra, India · Organic Since 2000s</div>
-        <div>fromfarm.co.in · © 2026</div>
-      </footer>
+      {/* FOOTER */}
+      <Footer />
 
     </div>
   );
