@@ -95,11 +95,13 @@ const ALL_PRODUCTS = [
 
 export default function ProductDetail() {
   const { id } = useParams();
-const navigate = useNavigate();
-const { addToCart } = useCart();
-const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const isMobile = useIsMobile();
   const whatsapp = import.meta.env.VITE_WHATSAPP_NUMBER;
   const [qty, setQty] = useState(1);
+  const [activeThumb, setActiveThumb] = useState(0);
+  const [addedMsg, setAddedMsg] = useState(false);
 
   const product = ALL_PRODUCTS.find((p) => p.id === id);
 
@@ -120,99 +122,138 @@ const isMobile = useIsMobile();
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
-  return (
-    <div style={{ fontFamily: "'Segoe UI', sans-serif", color: "#1a1a1a", minHeight: "100vh" }}>
-      <SeasonalBanner />
-<MarqueeBanner />
+  const handleAddToCart = () => {
+    addToCart(product, qty);
+    setAddedMsg(true);
+    setTimeout(() => setAddedMsg(false), 2000);
+  };
 
-      {/* NAVBAR */}
+  return (
+    <div style={{ fontFamily: "'Segoe UI', sans-serif", color: "#1a1a1a", minHeight: "100vh", background: "#f7f9f4" }}>
+      <SeasonalBanner />
+      <MarqueeBanner />
       <Navbar />
 
       {/* BREADCRUMB */}
       <div style={{ padding: "12px 32px", fontSize: 13, color: "#888" }}>
         <span style={{ cursor: "pointer", color: "#3B6D11" }} onClick={() => navigate("/")}>Home</span>
         {" → "}
+        <span style={{ cursor: "pointer", color: "#3B6D11" }} onClick={() => navigate("/shop")}>Shop</span>
+        {" → "}
         <span>{product.name}</span>
       </div>
 
       {/* MAIN CONTENT */}
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: isMobile ? "20px 16px 60px" : "32px 32px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 48, alignItems: "start" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: isMobile ? "20px 16px 60px" : "32px 32px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 48, alignItems: "start" }}>
 
-        {/* LEFT — Product Image */}
-        <div>
-          <div style={{ height: 360, background: product.bg, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 140, marginBottom: 16 }}>
-            {product.emoji}
-          </div>
-          <div style={{ display: "flex", gap: 10 }}>
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} style={{ flex: 1, height: 80, background: product.bg, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, cursor: "pointer", border: i === 0 ? "2px solid #3B6D11" : "2px solid transparent" }}>
-                {product.emoji}
-              </div>
-            ))}
+        {/* LEFT — Glass Image Card */}
+        <div className="farm-card" style={{ padding: 0, background: "rgba(255,255,255,0.25)" }}>
+          <div className="farm-card-aurora" style={{ width: 280, height: 280, top: "40%", left: "50%" }} />
+          <div className="farm-card-bg" />
+          <div style={{ position: "relative", zIndex: 3, padding: 24 }}>
+            {/* Main image */}
+            <div style={{ height: isMobile ? 260 : 340, background: product.bg, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 130, marginBottom: 16, transition: "0.3s ease" }}>
+              {product.emoji}
+            </div>
+            {/* Thumbnails */}
+            <div style={{ display: "flex", gap: 10 }}>
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  onClick={() => setActiveThumb(i)}
+                  style={{
+                    flex: 1, height: 72, background: product.bg, borderRadius: 12,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 28, cursor: "pointer",
+                    border: activeThumb === i ? "2px solid #3B6D11" : "2px solid rgba(255,255,255,0.5)",
+                    transition: "0.2s ease",
+                    transform: activeThumb === i ? "scale(1.05)" : "scale(1)"
+                  }}
+                >
+                  {product.emoji}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* RIGHT — Product Info */}
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+
           {/* Badges */}
           <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
             {product.badges.map((b, i) => (
-              <span key={i} style={{ background: "#EAF3DE", color: "#27500A", fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>{b}</span>
+              <span key={i} style={{ background: "#EAF3DE", color: "#27500A", fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 20, letterSpacing: 1 }}>{b}</span>
             ))}
           </div>
 
           {/* Name */}
-          <h1 style={{ fontSize: 32, fontWeight: 800, color: "#173404", marginBottom: 8 }}>{product.name}</h1>
+          <h1 style={{ fontSize: isMobile ? 26 : 34, fontWeight: 800, color: "#173404", marginBottom: 8, lineHeight: 1.2 }}>{product.name}</h1>
+
+          {/* Stars */}
+          <div style={{ fontSize: 14, color: "#FFB800", marginBottom: 12 }}>★★★★★ <span style={{ color: "#888", fontWeight: 400, fontSize: 13 }}>({product.reviews.length} reviews)</span></div>
 
           {/* Price */}
-          <div style={{ fontSize: 28, fontWeight: 800, color: "#3B6D11", marginBottom: 16 }}>
+          <div style={{ fontSize: 30, fontWeight: 800, color: "#3B6D11", marginBottom: 16 }}>
             {product.price}<span style={{ fontSize: 16, color: "#888", fontWeight: 400 }}>{product.unit}</span>
           </div>
 
           {/* Description */}
           <p style={{ fontSize: 15, color: "#444", lineHeight: 1.7, marginBottom: 20 }}>{product.desc}</p>
 
-          {/* Features */}
-          <div style={{ marginBottom: 24 }}>
-            {product.features.map((f, i) => (
-              <div key={i} style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 8 }}>
-                <span style={{ color: "#3B6D11", fontSize: 16 }}>✓</span>
-                <span style={{ fontSize: 14, color: "#444" }}>{f}</span>
-              </div>
-            ))}
+          {/* Features — glass card */}
+          <div className="farm-card" style={{ marginBottom: 24, padding: 0 }}>
+            <div className="farm-card-aurora" style={{ width: 150, height: 150, opacity: 0.5 }} />
+            <div className="farm-card-bg" />
+            <div style={{ position: "relative", zIndex: 3, padding: "16px 20px" }}>
+              {product.features.map((f, i) => (
+                <div key={i} style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: i < product.features.length - 1 ? 10 : 0 }}>
+                  <span style={{ color: "#3B6D11", fontSize: 16, flexShrink: 0 }}>✓</span>
+                  <span style={{ fontSize: 14, color: "#444" }}>{f}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Quantity Selector */}
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: "#173404" }}>Quantity:</span>
-            <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: 32, height: 32, borderRadius: "50%", border: "1px solid #e5e5e5", background: "#fff", fontSize: 18, cursor: "pointer" }}>−</button>
-            <span style={{ fontSize: 16, fontWeight: 700, minWidth: 24, textAlign: "center" }}>{qty}</span>
-            <button onClick={() => setQty(q => q + 1)} style={{ width: 32, height: 32, borderRadius: "50%", border: "1px solid #e5e5e5", background: "#fff", fontSize: 18, cursor: "pointer" }}>+</button>
+            <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid #d0e8b8", background: "#EAF3DE", fontSize: 20, cursor: "pointer", color: "#173404", fontWeight: 700 }}>−</button>
+            <span style={{ fontSize: 18, fontWeight: 700, minWidth: 28, textAlign: "center", color: "#173404" }}>{qty}</span>
+            <button onClick={() => setQty(q => q + 1)} style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid #d0e8b8", background: "#EAF3DE", fontSize: 20, cursor: "pointer", color: "#173404", fontWeight: 700 }}>+</button>
+            <span style={{ fontSize: 13, color: "#888" }}>Total: <strong style={{ color: "#3B6D11" }}>₹{parseInt(product.price.replace("₹", "")) * qty}</strong></span>
           </div>
 
-          {/* Order Button */}
-          <button onClick={() => addToCart(product, qty)} style={{ width: "100%", background: "#3B6D11", color: "#fff", border: "none", padding: "16px", borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>
-  🛒 Add to Cart
-</button>
+          {/* Buttons */}
+          <button
+            onClick={handleAddToCart}
+            style={{ width: "100%", background: addedMsg ? "#27500A" : "#3B6D11", color: "#fff", border: "none", padding: "16px", borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: "pointer", marginBottom: 12, transition: "0.3s ease" }}
+          >
+            {addedMsg ? "✓ Added to Cart!" : "🛒 Add to Cart"}
+          </button>
           <button onClick={handleOrder} style={{ width: "100%", background: "#25D366", color: "#fff", border: "none", padding: "16px", borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>
             💬 Order on WhatsApp
           </button>
-          <button onClick={() => navigate("/")} style={{ width: "100%", background: "#EAF3DE", color: "#27500A", border: "none", padding: "14px", borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
+          <button onClick={() => navigate("/shop")} style={{ width: "100%", background: "#EAF3DE", color: "#27500A", border: "none", padding: "14px", borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
             ← Continue Shopping
           </button>
         </div>
       </div>
 
-      {/* REVIEWS */}
-      <div style={{ background: "#f9f9f9", padding: "48px 32px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      {/* REVIEWS — glass cards */}
+      <div style={{ padding: isMobile ? "32px 16px" : "48px 32px", background: "linear-gradient(180deg, #f7f9f4 0%, #eaf3de 100%)" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 24, fontWeight: 800, color: "#173404", marginBottom: 24 }}>Customer Reviews</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 20 }}>
             {product.reviews.map((r, i) => (
-              <div key={i} style={{ background: "#fff", border: "1px solid #e5e5e5", borderRadius: 14, padding: 20 }}>
-                <div style={{ fontSize: 14, color: "#FFB800", marginBottom: 8 }}>{"★".repeat(r.s)}</div>
-                <p style={{ fontSize: 14, color: "#444", lineHeight: 1.6, marginBottom: 12 }}>"{r.t}"</p>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#173404" }}>— {r.n}</div>
+              <div key={i} className="farm-card" style={{ padding: 0 }}>
+                <div className="farm-card-aurora" style={{ width: 120, height: 120, opacity: 0.4 }} />
+                <div className="farm-card-bg" />
+                <div style={{ position: "relative", zIndex: 3, padding: 20 }}>
+                  <div style={{ fontSize: 14, color: "#FFB800", marginBottom: 8 }}>{"★".repeat(r.s)}</div>
+                  <p style={{ fontSize: 14, color: "#444", lineHeight: 1.6, marginBottom: 12 }}>"{r.t}"</p>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#173404" }}>— {r.n}</div>
+                </div>
               </div>
             ))}
           </div>
@@ -220,12 +261,11 @@ const isMobile = useIsMobile();
       </div>
 
       {/* FOOTER */}
-      <footer style={{ padding: "24px 32px", borderTop: "1px solid #e5e5e5", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, fontSize: 13, color: "#888" }}>
+      <footer style={{ padding: "24px 32px", borderTop: "1px solid #e5e5e5", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, fontSize: 13, color: "#888", background: "#fff" }}>
         <div style={{ fontSize: 18, fontWeight: 800, color: "#3B6D11", letterSpacing: 2 }}>FROM FARM</div>
         <div>Maharashtra, India · Organic Since 1962</div>
         <div>fromfarm.co.in · © 2026</div>
       </footer>
-
     </div>
   );
 }
