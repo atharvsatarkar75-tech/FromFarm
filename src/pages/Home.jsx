@@ -48,7 +48,7 @@ useEffect(() => {
       reviews: [{ n: "Amit P.", s: 5, t: "The fragrance alone is worth every rupee! These Kesar mangoes are exactly like the ones from my childhood." }, { n: "Deepa R.", s: 5, t: "Ordered the Farm Box and fell in love with Kesar. Now ordering a full dozen. Absolutely divine." }, { n: "Vijay N.", s: 5, t: "Direct from farm makes all the difference. Juicy, sweet, and so fresh. 10 out of 10!" }]
     },
     {
-      id: "pom", name: "Pomegranate", price: "₹120", unit: "/kg",
+      id: "pomegranate", name: "Pomegranate", price: "₹120", unit: "/kg",
       emoji: "❤️", bg: "#FCE4EC", photos: [],
       badges: [{ t: "ORGANIC", c: "green" }],
       desc: "Our pomegranates are grown on the same organic land as our mangoes. Deep ruby red arils bursting with sweet-tart juice, rich in antioxidants and vitamins. Grown without any pesticides or artificial inputs on our family farm.",
@@ -82,7 +82,7 @@ useEffect(() => {
   ];
 
   const handleOrder = (productName) => {
-    const message = `Hi! I want to order ${qty} x ${productName} from From Farm.`;
+    const message = `Hi! I want to order ${productName} from From Farm.`;
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
@@ -107,9 +107,17 @@ useEffect(() => {
 
   const scrollToSection = (id) => {
     setDrawerOpen(false);
+    
     setTimeout(() => {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: "smooth" });
+      else {
+        navigate("/");
+        setTimeout(() => {
+          const el2 = document.getElementById(id);
+          if (el2) el2.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+      }
     }, 100);
   };
 
@@ -128,7 +136,7 @@ useEffect(() => {
       <div style={{ position: "fixed", top: 0, left: drawerOpen ? 0 : -280, width: 280, height: "100%", background: "#173404", zIndex: 300, transition: "left 0.35s cubic-bezier(0.4,0,0.2,1)", paddingTop: 72 }}>
         <button onClick={() => setDrawerOpen(false)} style={{ position: "absolute", top: 20, right: 20, width: 36, height: 36, background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "50%", cursor: "pointer", color: "#C0DD97", fontSize: 18 }}>✕</button>
         <div style={{ padding: "0 28px 24px", fontSize: 20, fontWeight: 800, color: "#C0DD97", letterSpacing: 2, borderBottom: "1px solid rgba(255,255,255,0.1)", marginBottom: 8 }}>FROM <span style={{ color: "#97C459" }}>FARM</span></div>
-        {[["🏠", "Home", () => scrollToSection("hero-section")], ["🛒", "Shop", () => { setDrawerOpen(false); navigate("/shop"); }], ["🌳", "Our Story", () => { setDrawerOpen(false); navigate("/our-story"); }], ["📞", "Contact Us", () => scrollToSection("contact-sec")]].map(([icon, label, fn]) => (
+        {[["🏠", "Home", () => scrollToSection("hero-section")], ["🛒", "Shop", () => { setDrawerOpen(false); navigate("/shop"); }], ["🌳", "Our Story", () => { setDrawerOpen(false); navigate("/our-story"); }], ["📞", "Contact Us", () => { setDrawerOpen(false); navigate("/contact"); }]].map(([icon, label, fn]) => (
           <div key={label} onClick={fn} style={{ display: "flex", alignItems: "center", gap: 14, color: "#C0DD97", fontSize: 17, fontWeight: 600, padding: "18px 28px", borderBottom: "1px solid rgba(255,255,255,0.08)", cursor: "pointer", transition: "padding-left 0.2s" }}>
             {icon} {label}
           </div>
@@ -318,7 +326,7 @@ useEffect(() => {
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24 }}>
               <button onClick={() => navigate("/our-story")} style={{ background: "#97C459", color: "#173404", border: "none", padding: "12px 24px", borderRadius: 25, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Read Our Full Story →</button>
-              <button onClick={() => scrollToSection("contact-sec")} style={{ background: "transparent", color: "#C0DD97", border: "2px solid rgba(150,196,89,0.4)", padding: "12px 24px", borderRadius: 25, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Get in Touch</button>
+              <button onClick={() => navigate("/contact")} style={{ background: "transparent", color: "#C0DD97", border: "2px solid rgba(150,196,89,0.4)", padding: "12px 24px", borderRadius: 25, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Get in Touch</button>
             </div>
           </div>
 

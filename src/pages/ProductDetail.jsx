@@ -37,6 +37,7 @@ const ALL_PRODUCTS = [
     emoji: "🥭",
     bg: "#FFF3CD",
     badges: ["GI TAGGED", "FROM OUR FARM"],accentColor: "#BA7517",
+    photos: ["/images/kesar1.jpg", "/images/kesar2.jpg", "/images/kesar3.jpg"],
     desc: "Kesar mango is a GI-tagged variety celebrated for its distinctive saffron colour and incredible fragrance. Our Kesar mangoes come straight from our Maharashtra farm — no cold storage, no preservatives.",
     features: [
       "GI-tagged certified Kesar variety",
@@ -196,17 +197,20 @@ export default function ProductDetail() {
           <div className="farm-card-bg" />
           <div style={{ position: "relative", zIndex: 3, padding: 24 }}>
             {/* Main image */}
-            <div style={{ height: isMobile ? 260 : 340, background: product.bg, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 130, marginBottom: 16, transition: "0.3s ease" }}>
-              {product.emoji}
+            <div style={{ height: isMobile ? 260 : 340, background: product.bg, borderRadius: 16, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 130, marginBottom: 16, transition: "0.3s ease" }}>
+              {product.photos && product.photos.length > 0
+                ? <img src={product.photos[activeThumb]} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                : product.emoji}
             </div>
             {/* Thumbnails */}
             <div style={{ display: "flex", gap: 10 }}>
-              {[0, 1, 2].map((i) => (
+              {(product.photos && product.photos.length > 0 ? product.photos : [product.emoji, product.emoji, product.emoji]).map((photo, i) => (
                 <div
                   key={i}
                   onClick={() => setActiveThumb(i)}
                   style={{
                     flex: 1, height: 72, background: product.bg, borderRadius: 12,
+                    overflow: "hidden",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: 28, cursor: "pointer",
                     border: activeThumb === i ? "2px solid #3B6D11" : "2px solid rgba(255,255,255,0.5)",
@@ -214,7 +218,9 @@ export default function ProductDetail() {
                     transform: activeThumb === i ? "scale(1.05)" : "scale(1)"
                   }}
                 >
-                  {product.emoji}
+                  {product.photos && product.photos.length > 0
+                    ? <img src={photo} alt={`View ${i+1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    : product.emoji}
                 </div>
               ))}
             </div>

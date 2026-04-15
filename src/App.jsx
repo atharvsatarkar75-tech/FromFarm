@@ -8,6 +8,7 @@ import Shop from "./pages/Shop";
 import Contact from "./pages/Contact";
 import CartDrawer from "./components/CartDrawer";
 
+
 function App() {
   return (
     <BrowserRouter>

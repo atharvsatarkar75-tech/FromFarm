@@ -19,6 +19,7 @@ const ALL_PRODUCTS = [
     id: "kesar", name: "Kesar Mango", price: 700, unit: "/dozen",
     emoji: "🥭", bg: "#FFFDE7", category: "Mango", popularity: 1,
     badges: ["GI TAGGED", "FROM OUR FARM"],
+    photos: ["/images/kesar1.jpg", "/images/kesar2.jpg", "/images/kesar3.jpg"],
     badgeColor: "#BA7517", accentColor: "#BA7517",
     desc: "Kesar mango is a GI-tagged variety celebrated for its distinctive saffron colour and incredibly sweet fragrance.",
   },
@@ -147,7 +148,9 @@ const isMobile = useIsMobile();
 
   {/* IMAGE */}
   <div style={{ position: "relative", height: 200, background: p.bg, overflow: "hidden", zIndex: 3, margin: 8, borderRadius: 14 }}>
-    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 90 }}>{p.emoji}</div>
+    {p.photos && p.photos.length > 0
+  ? <img src={p.photos[0]} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+  : <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 90 }}>{p.emoji}</div>}
     <div style={{ position: "absolute", top: 10, left: 10, display: "flex", gap: 6, flexWrap: "wrap" }}>
       {p.badges.map((b, i) => (
         <span key={i} style={{ background: p.badgeColor, color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 20 }}>{b}</span>
